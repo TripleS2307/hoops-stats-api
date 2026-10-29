@@ -4,6 +4,8 @@ import com.example.hoops.model.Player;
 import com.example.hoops.repository.PlayerRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PlayerService {
     private final PlayerRepository playerRepository;
@@ -23,5 +25,13 @@ public class PlayerService {
     public Player getPlayer(Long id) {
         return playerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Player not found with ID: " + id));
+    }
+
+    public List<Player> listPlayers() {
+        return playerRepository.findAll();
+    }
+
+    public List<Player> listPlayersWithPointsAtLeast(double minPpg) {
+        return listPlayers().stream().filter((player -> player.getPointsPerGame() >= minPpg)).toList();
     }
 }
