@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/players")
 public class PlayerController {
@@ -30,4 +32,18 @@ public class PlayerController {
         return ResponseEntity.ok(player);
     }
 
+    // Example URLs you can test
+    // GET /api/players
+    // GET /api/players?minPpg=20
+    @GetMapping
+    public ResponseEntity<List<Player>> listPlayers(@RequestParam(required = false) Double minPpg) {
+        List<Player> players;
+        if (minPpg != null) {
+            players = playerService.listPlayersWithPointsAtLeast(minPpg);
+        }
+        else {
+            players = playerService.listPlayers();
+        }
+        return ResponseEntity.ok(players);
+    }
 }
